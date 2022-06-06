@@ -1,8 +1,14 @@
 import { useCallback, useMemo, useRef, useState } from "react";
+
+import { useUsuarioLogado } from "../../shared/hooks";
+
+import { ButtonLogin } from "./components/ButtonLogin";
 import { InputLogin } from "./components/InputLogin";
 
 export const Login = () => {
     const inputPasswordRef = useRef<HTMLInputElement>(null)
+
+    const { nomeDoUsuario } = useUsuarioLogado();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -15,38 +21,33 @@ export const Login = () => {
     const handleEntrar = useCallback(() => {
         console.log(email)
         console.log(password)
-    },[email, password]);
+    }, [email, password]);
 
 
-    return(
+    return (
         <div>
             <form>
                 <p>Quantidade de caracteres: {emailLength}</p>
+                <p>Olá, {nomeDoUsuario}</p>
 
-               <InputLogin
+                <InputLogin
                     label="Email"
                     value={email}
                     onChange={newValue => setEmail(newValue)}
                     onPressEnter={() => inputPasswordRef.current?.focus()}
-               />
+                />
 
-               <InputLogin
+                <InputLogin
                     type="password"
                     label="Senha"
                     value={password}
+                    ref={inputPasswordRef}
                     onChange={newValue => setPassword(newValue)}
-               />
+                />
 
-               {/* <label>
-                    <span>Senha</span>
-                    <input
-                     type="password" 
-                     value={password} 
-                     ref={inputPasswordRef}
-                     onChange={e => setPassword(e.target.value)} />
-                    </label> */}
-
-                <button type="button" onClick={handleEntrar}>Entrar</button>
+                <ButtonLogin type="button" onClick={handleEntrar}>
+                    Entrar
+                </ButtonLogin>
             </form>
         </div>
     );
